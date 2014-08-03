@@ -35,7 +35,7 @@
       (parses-to "Paragraph Text.\n\nDifferent Paragraph.\n"
                  [:Paragraph "Paragraph Text."]
                  [:Paragraph "Different Paragraph."])
-      (parses-to "Paragraph Text.\n\nDifferent Paragraph.\n\n"
+      (parses-to "Paragraph Text.\n \nDifferent Paragraph.\n\n"
                  [:Paragraph "Paragraph Text."]
                  [:Paragraph "Different Paragraph."])
       (parses-to "Paragraph Text.\n Same Paragraph.\n\nDifferent Paragraph."

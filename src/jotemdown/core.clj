@@ -35,6 +35,6 @@
      <Blanklines> = EOL (Whitespace* EOL)+
      <Text> = (PlainText '\\n' | PlainText)+
      <PlainText> = #'(\\ |\\t|\\S)+'
-     <Whitespace> = #'(\\ | \\t)+'
+     <Whitespace> = <#'(\\ | \\t)+'>
      <EOL> = <'\\n'> | EOF
      <EOF> = <#'\\Z'>"))
