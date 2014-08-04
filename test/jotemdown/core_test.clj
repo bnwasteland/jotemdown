@@ -68,13 +68,19 @@
     (testing "spans"
       (parses-to "Blah *blah* blah" [:Paragraph "Blah " [:Emphasis "blah"] " blah"])
 
+      (parses-to "Blah ` blah` blah" [:Paragraph "Blah " [:CodeSpan " blah"] " blah"])
+
+      (parses-to "Blah *blah * blah" [:Paragraph "Blah " [:Emphasis "blah "] " blah"])
+
+      (parses-to "Blah ` blah ` blah" [:Paragraph "Blah " [:CodeSpan " blah "] " blah"])
+
       (parses-to "Blah *blah blah*" [:Paragraph "Blah " [:Emphasis "blah blah"]])
 
       (parses-to "`Blah blah` blah" [:Paragraph [:CodeSpan "Blah blah"] " blah"])
 
       (parses-to "*Blah blah blah*" [:Paragraph [:Emphasis "Blah blah blah"]])
 
-      (parses-to "*Blah\nblah blah*" [:Paragraph [:Emphasis "Blah" "\n" "blah blah"]])
+      (parses-to "`Blah\nblah blah`" [:Paragraph [:CodeSpan "Blah" "\n" "blah blah"]])
 
       (parses-to "*Blah\n\nblah blah*"
                  [:Paragraph "*" "Blah"]
