@@ -6,10 +6,10 @@
     "<Blocks> = (Paragraph)+
      Paragraph = Text Blanklines
      <Blanklines> = EOL (Whitespace* EOL)+
-     <Text> = (Span / Span '\\n')+
-     <Span> = (Emphasis / CodeSpan / PlainText / SpanDelimiter)
-     Emphasis = <'*'> PlainText <'*'>
-     CodeSpan = <'`'> PlainText <'`'>
+     <Text> = (Span / SpanDelimiter)+
+     <Span> = (Emphasis / CodeSpan / PlainText)
+     Emphasis = <'*'> Span+ <'*'>
+     CodeSpan = <'`'> Span+ <'`'>
      <PlainText> = (EscapedSpanDelimiter / UndecoratedString / UndecoratedString '\\n')+
      <EscapedSpanDelimiter> = <'\\\\'> SpanDelimiter
      <SpanDelimiter> = '*' | '`'
