@@ -40,13 +40,10 @@
      <Span> = (Emphasis / CodeSpan / PlainText / SpanDelimiter)
      Emphasis = <'*'> PlainText <'*'>
      CodeSpan = <'`'> PlainText <'`'>
-     <PlainText> = (EscapedSpanDelimiter / UndecoratedString / UndecoratedString CapturingWhitespace)+
+     <PlainText> = (EscapedSpanDelimiter / UndecoratedString / UndecoratedString '\\n')+
      <EscapedSpanDelimiter> = <'\\\\'> SpanDelimiter
      <SpanDelimiter> = '*' | '`'
      <UndecoratedString> = #'[^*`\\\\\\n]+'
-     <CapturingWhitespace> = #'(\\ | \\t)+\\n?' / '\\n'
      <Whitespace> = <#'(\\ | \\t)+'>
      <EOL> = <'\\n'> | EOF
      <EOF> = <#'\\Z'>"))
-
-(insta/parses parse-jotdown "*Blah\nblah blah*" :unhide :all)
