@@ -1,6 +1,8 @@
 (ns jotemdown.core
   (:require [instaparse.core :as insta]))
 
+;; This method is from [Hitman][https://github.com/chameco/Hitman], but it
+;; doesn't cover spans (those are done with post-processing), and it's very line oriented.
 (def parse-md
   (insta/parser
     "<Blocks> = (Paragraph | Header | List | Ordered | Code | Rule)+
@@ -28,13 +30,23 @@
     <Word> = #'\\S+'
     <EOL> = <'\\n'>"))
 
+
 (def parse-jotdown
   (insta/parser
     "<Blocks> = (Paragraph)+
      Paragraph = Text Blanklines
      <Blanklines> = EOL (Whitespace* EOL)+
-     <Text> = (PlainText '\\n' | PlainText)+
-     <PlainText> = #'(\\ |\\t|\\S)+'
+     <Text> = (Span / Span '\\n')+
+     <Span> = (Emphasis / CodeSpan / PlainText / SpanDelimiter)
+     Emphasis = <'*'> PlainText <'*'>
+     CodeSpan = <'`'> PlainText <'`'>
+     <PlainText> = (EscapedSpanDelimiter / UndecoratedString / UndecoratedString CapturingWhitespace)+
+     <EscapedSpanDelimiter> = <'\\\\'> SpanDelimiter
+     <SpanDelimiter> = '*' | '`'
+     <UndecoratedString> = #'[^*`\\\\\\n]+'
+     <CapturingWhitespace> = #'(\\ | \\t)+\\n?' / '\\n'
      <Whitespace> = <#'(\\ | \\t)+'>
      <EOL> = <'\\n'> | EOF
      <EOF> = <#'\\Z'>"))
+
+(insta/parses parse-jotdown "*Blah\nblah blah*" :unhide :all)
