@@ -96,4 +96,10 @@
 
       (parses-to "*x*3\\*" [:Paragraph [:Emphasis "x"] "3" "*"])
 
-      (parses-to "*x*, *y*" [:Paragraph [:Emphasis "x"] ", " [:Emphasis "y"]]))))
+      (parses-to "*x*, *y*" [:Paragraph [:Emphasis "x"] ", " [:Emphasis "y"]])
+
+      (parses-to "[google it] [http://google.com]"
+                 [:Paragraph [:Link [:Label "google it"]
+                                    [:Target "http://google.com"]]]))
+
+    -))
