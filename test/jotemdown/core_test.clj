@@ -102,4 +102,53 @@
                  [:Paragraph [:Link [:Label "google it"]
                                     [:Target "http://google.com"]]]))
 
-    -))
+    (testing "mixing spans"
+      (parses-to "`foo*3`" [:Paragraph [:CodeSpan "foo" "*" "3"]])
+
+      (parses-to "*fo`*" [:Paragraph [:Emphasis "fo" "`"]])
+
+      (parses-to "*`foo`*" [:Paragraph [:Emphasis [:CodeSpan "foo"]]])
+
+      (parses-to "`*foo*`" [:Paragraph [:CodeSpan [:Emphasis "foo"]]])
+
+      (parses-to "`*foo*`" [:Paragraph [:CodeSpan [:Emphasis "foo"]]])
+
+      (parses-to "`*`*`*foo*`*`*`"
+                 [:Paragraph
+                  [:CodeSpan
+                   [:Emphasis
+                    [:CodeSpan
+                     [:Emphasis
+                      [:CodeSpan
+                       [:Emphasis "foo"]]]]]]])
+
+      (parses-to "[google*][http://google.com]"
+                 [:Paragraph [:Link [:Label "google" "*"]
+                                    [:Target "http://google.com"]]])
+
+      (parses-to "[google*][http://google.com]*"
+                 [:Paragraph [:Link [:Label "google" "*"]
+                                    [:Target "http://google.com"]]
+                             "*"])
+
+      (parses-to "*[google*][http://google.com]*"
+                 [:Paragraph
+                  [:Emphasis [:Link [:Label "google" "*"]
+                                    [:Target "http://google.com"]]]])
+
+      (parses-to "[*google*][http://google.com]"
+                 [:Paragraph [:Link [:Label [:Emphasis "google"]]
+                                    [:Target "http://google.com"]]])
+
+      (parses-to "[`google`][http://google.com]"
+                 [:Paragraph [:Link [:Label [:CodeSpan "google"]]
+                                    [:Target "http://google.com"]]])
+
+      (parses-to "[google`][http://google.com]"
+                 [:Paragraph [:Link [:Label "google" "`"]
+                                    [:Target "http://google.com"]]])
+
+      (parses-to "`[google`][http://google.com]`"
+                 [:Paragraph
+                  [:CodeSpan [:Link [:Label "google" "`"]
+                                    [:Target "http://google.com"]]]]))))
